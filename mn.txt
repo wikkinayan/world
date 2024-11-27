@@ -1,0 +1,997 @@
+Descriptive Statistics Programs
+Basic Statistical Operations Using Pandas
+import pandas as pd
+col_list = ["id", "first", "last", "gender", "Marks", "selected"]
+df = pd.read_csv("sample.csv", usecols=col_list)
+print(df)
+mean1 = df['Marks'].mean()
+sum1 = df['Marks'].sum()
+max1 = df['Marks'].max()
+min1 = df['Marks'].min()
+count1 = df['Marks'].count()
+median1 = df['Marks'].median()
+sd1 = df['Marks'].std()
+var1 = df['Marks'].var()
+print('Mean Marks\n' + str(mean1))
+print('Sum of the Marks\n' + str(sum1))
+print('Maximum of the marks\n' + str(max1))
+print('Minimum of the marks\n' + str(min1))
+print('Count of the marks\n' + str(count1))
+print('Standard deviation of the marks\n' + str(sd1))
+print('Variance of the marks\n' + str(var1))
+print('End of Summary\n')
+print(df)
+print(df.shape)
+print(df.head(5))
+print(df.describe())
+Descriptive statistics using scipy
+from scipy import stats
+data = [1, 2, 3, 4, 5, 6, 8, 8, 8, 8, 9, 10, 10, 10, 12, 14, 18, 18, 18, 22, 39, 44, 55, 55, 55, 55, 66, 78, 79, 88]
+print("\n Details of the data \n", stats.describe(data))
+print("\n The cumulative frequency of the data\n", stats.cumfreq(data))
+print("\n The Geometric mean of the data\n", stats.gmean(data))
+print("\n The Harmonic mean of the data\n", stats.hmean(data))
+print("\n The IQR of the data\n", stats.iqr(data))
+print("\n The Zscore of the data\n", stats.zscore(data))
+print("\n The skewness of the data\n", stats.skew(data))
+print("\n The Kurtosis of the data\n", stats.kurtosis(data))
+Label Encoding with Scikit-learn
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+# Load dataset
+col_list = ["id", "first", "last", "gender", "Marks", "selected"]
+df = pd.read_csv("sample.csv", usecols=col_list)
+print(df)
+# Encode gender: Female as 0 and Male as 1
+df_gender_encode = LabelEncoder()
+df.gender = df_gender_encode.fit_transform(df.gender)
+print(df)
+print("End of Label Encoding\n\n")
+Scaling the Dataset
+from sklearn import preprocessing
+import pandas as pd
+# Load dataset
+col_list = ["id", "first", "last", "gender", "Marks", "selected"]
+df = pd.read_csv("sample.csv", usecols=col_list)
+# Scale marks to remove mean
+df.Marks = preprocessing.scale(df.Marks)
+scaled_df = preprocessing.scale(df.Marks)
+print(df)
+print("Scaling of marks is completed\n\n")
+Binarization of Marks
+from sklearn.preprocessing import Binarizer
+import pandas as pd
+from sklearn import preprocessing
+# Load dataset
+col_list = ["id", "first", "last", "gender", "Marks", "selected"]
+df = pd.read_csv("sample.csv", usecols=col_list)
+# Scale and binarize marks
+df.Marks = preprocessing.scale(df.Marks)
+scaled_df = preprocessing.scale(df.Marks)
+newarr = scaled_df.reshape(-1, 1)
+scaled_df_bin = Binarizer(threshold=0.5).transform(newarr)
+df['Marks'] = scaled_df_bin
+print(df)
+print("Binarization of marks is completed\n\n")
+Handling Duplicates
+import pandas as pd
+# Load dataset
+col_list = ["id", "first", "last", "gender", "Marks", "selected"]
+df = pd.read_csv("sample.csv", usecols=col_list)
+# Create duplicate entries
+df_duplicated = pd.concat([df] * 2, ignore_index=True)
+print("Before removing duplicates:")
+print(df_duplicated)
+# Remove duplicates
+df_duplicates_removed = pd.DataFrame.drop_duplicates(df_duplicated)
+print("After removing duplicates:")
+print(df_duplicates_removed)
+Handling NaN values
+import pandas as pd
+# Create sample dataset with NaN values
+df = pd.DataFrame({
+ 'm1': [50, 'A', 60, 'A', 80],
+ 'm2': [60, 'A', '60', 'A', 80],
+ 'm3': [50, 70, 'A', 'A', 60],
+ 'm4': [60, 'A', 'A', 'A', 60],
+ 'm5': ['A', 'A', 'A', 10, 20]
+})
+# Convert invalid values to NaN
+df = df.apply(pd.to_numeric, errors='coerce')
+print('Dataframe with NaN:')
+print(df)
+# Fill NaN in m5 with 0
+df['m5'] = df['m5'].fillna(0)
+print('After filling m5 NaN with 0:')
+print(df)
+# Fill NaN in m2 with mean
+df['m2'].fillna(df['m2'].mean(), inplace=True)
+print('After filling m2 NaN with mean:')
+print(df)
+# Drop columns with NaN
+df_cleaned = df.dropna(axis=1)
+print('After dropping columns with NaN:')
+print(df_cleaned)
+Min-Max Scaling and Z-Score Standardization
+from numpy import asarray
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+# Create sample data
+data = asarray([[1, 3], [8, 5], [6, 7], [8, 9]])
+print("Original Data:")
+print(data)
+# Apply Min-Max Scaling
+scaler1 = MinMaxScaler()
+scaled1 = scaler1.fit_transform(data)
+print("\nMin-Max Scaling Output:")
+print(scaled1)
+# Apply Standard Scaling
+scaler2 = StandardScaler()
+scaled2 = scaler2.fit_transform(data)
+print("\nZ-Score Standardization Output:")
+print(scaled2)
+Univariate and Bivariate (EX – 3)
+import pandas as pd
+from matplotlib import pyplot as plt
+col_list = ['id', 'name', 'gender', 'physics', 'chemistry', 'maths', 'biology', 'language', 'selected']
+df = pd.read_csv('marks1.csv', usecols=col_list)
+print(df)
+marks1 = df['physics'].values.tolist()
+df['physics'].hist()
+plt.title('Histogram for Physics Marks')
+plt.xlabel('Physics Marks')
+plt.ylabel('Frequency of Physics Marks')
+plt.show()
+chemistry1 = df['chemistry'].values.tolist()
+plt.scatter(chemistry1, marks1, alpha=0.5)
+plt.title('Scatter plot chemistry vs physics')
+plt.xlabel('Chemistry')
+plt.ylabel('Physics')
+plt.show()
+df.plot.box(title="Box and whisker plot of Marks", grid=False)
+plt.show()
+sums = df.selected.groupby(df.gender).sum()
+plt.pie(sums, labels=sums.index)
+plt.show()
+df.plot(kind='box', subplots=True, layout=(3, 3), sharex=False, sharey=False)
+plt.show()
+cols = df[['id', 'name', 'gender', 'selected']]
+df2 = df.drop(cols, axis=1)
+pd.plotting.scatter_matrix(df2, alpha=0.2)
+plt.show()
+Listing - 2
+import pandas as pd
+df = pd.read_csv("iris.csv")
+data = df.iloc[1:20]
+data.plot.scatter('sepal.length', 'sepal.width')
+data.hist(column='variety', by='variety')
+data.boxplot(column='sepal.length', by='variety')
+Seaborn
+import seaborn as sns
+import pandas as pd
+from matplotlib import pyplot as plt
+# Create a synthetic dataset
+data = {'week': [1, 2, 3, 4, 5],
+ 'sales': [1.2, 1.8, 2.6, 3.2, 3.8],
+ 'region': ['south', 'south', 'north', 'north', 'north']}
+df = pd.DataFrame(data)
+# Read the preloaded dataset Iris using DataFrame df1
+df1 = sns.load_dataset('iris')
+sns.set(color_codes=True)
+# Histogram plot using barplot
+sns.barplot(x="week", y="sales", hue="region", data=df).set_title('Bar plot for weeks Vs Sales Data')
+plt.show()
+# Box Plot
+sns.boxplot(data=df)
+plt.xlabel("Statistics", size=18)
+plt.ylabel("Week and Sales Data", size=18)
+plt.show()
+# Distribution Plot - Histogram
+sns.distplot(df1['sepal_width'], kde=False).set_title('Distribution plot for sepal_width')
+plt.xlabel("Sepal Width", size=18)
+plt.ylabel("Frequency", size=18)
+plt.show()
+# Distribution Plot - Kernel Density Estimation
+sns.distplot(df1['sepal_width'], hist=False).set_title('Distribution plot for sepal_width')
+plt.xlabel("Sepal Width", size=18)
+plt.ylabel("Frequency", size=18)
+plt.show()
+# Violin Plot
+sns.violinplot(data=df).set_title('Violin Plot for week and sales data')
+plt.xlabel("Statistics", size=18)
+plt.ylabel("Region", size=18)
+plt.show()
+# Count Plot for Region
+sns.countplot(x="region", data=df, palette="Blues").set_title('Count plot Based on regions')
+plt.xlabel("Statistics", size=18)
+plt.ylabel("Region", size=18)
+plt.show()
+# Strip Plot for Iris Data
+sns.stripplot(x="species", y="petal_length", data=df1).set_title('Strip plot for petal length and class')
+plt.show()
+Bivariate and Multivariate
+import seaborn as sns
+import pandas as pd
+from matplotlib import pyplot as plt
+# Create a synthetic dataset
+data = {'week': [1, 2, 3, 4, 5],
+ 'sales': [1.2, 1.8, 2.6, 3.2, 3.8],
+ 'region': ['south', 'south', 'north', 'north', 'north']}
+df = pd.DataFrame(data)
+# Read the preloaded dataset Iris using DataFrame df1
+df1 = sns.load_dataset('iris')
+sns.set(color_codes=True)
+# Joint Plot
+sns.jointplot(x='week', y='sales', data=df)
+plt.show()
+# Regression Plot using lmplot
+sns.lmplot(x="week", y="sales", hue="region", data=df)
+# Pair Plot for Iris Dataset
+sns.pairplot(df1, hue='species', kind="scatter")
+plt.show()
+Scipy
+**Chi-Square Test**
+from scipy.stats import chi2_contingency, chi2, ttest_ind
+table = [[35, 15], # Boys: Registered, Not Registered
+ [25, 25]] # Girls: Registered, Not Registered
+print('\nObservation Table:')
+print(table)
+# Perform the chi-square test
+stat, p, dof, expected = chi2_contingency(table)
+# Display the expected values
+print('\nExpectation Table:')
+print(expected)
+# Significance level (90% confidence)
+prob = 0.90
+# Calculate the critical value
+critical = chi2.ppf(prob, dof)
+print('\nChi-Square Test Results:')
+print(f'Critical Value: {critical:.3f}')
+print(f'Statistical Value: {stat:.3f}')
+# Decision
+if abs(stat) >= critical:
+ print('Reject Null Hypothesis: There is an association.')
+else:
+ print('Fail to Reject Null Hypothesis: No association.')
+**T-Test**
+# Sample datasets
+x = [6, 3, 4, 5, 5, 9, 7, 8] # Dataset 1
+y = [4, 4, 1, 3, 5, 6, 2, 7] # Dataset 2
+# Perform t-test
+stat, p = ttest_ind(x, y, equal_var=True)
+print('\nT-Test Results:')
+print(f'Statistical Value: {stat:.3f}')
+print(f'p-Value: {p:.3f}')
+# Decision based on p-value
+if p < 0.05:
+ print('Reject Null Hypothesis: Significant difference between means.')
+else:
+ print('Fail to Reject Null Hypothesis: No significant difference.')
+PCA
+PCA with Random Data
+import numpy as np
+from sklearn import decomposition
+# Define the original matrix
+X = np.array([[2, 6], [1, 7]])
+print("Original Matrix X and its Shape")
+print(X)
+print("Original Shape:", X.shape)
+# Apply PCA
+pca = decomposition.PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+print("\nTransformed Matrix and its Shape")
+print(X_pca)
+print("Transformed Shape:", X_pca.shape)
+# Apply Inverse Transform
+print("\nAfter Inverse Transform")
+X_new = pca.inverse_transform(X_pca)
+print(X_new)
+# Explain variance
+print('\nExplained Variance:')
+print(pca.explained_variance_ratio_)
+# Singular values
+print('\nSingular values:')
+print(pca.singular_values_)
+Eigenvalue and Eigenvector Calculation
+import numpy as np
+from numpy.linalg import eig
+# Define a matrix
+X = np.array([[3, 6], [4, 7]])
+print("Original Matrix X and its Shape")
+print(X)
+# Calculate the mean of each column
+M = np.mean(X.T, axis=1)
+print("\nMean matrix")
+print(M)
+# Center the matrix by subtracting the column means
+C = X - M
+print("\nCentered Matrix")
+print(C)
+# Calculate the covariance matrix of the centered matrix
+V = np.cov(C.T)
+print("\nCovariance Matrix")
+print(V)
+# Eigendecomposition of covariance matrix
+values, vectors = eig(V)
+print('\nEigen Vectors')
+print(vectors)
+print('\nEigen Values')
+print(values)
+PCA on Iris Dataset
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import decomposition
+# Load the Iris dataset
+df = pd.read_csv("iris.csv")
+print(df.head(10))
+# Split into features and target
+array = df.values
+X = array[:, 0:4]
+y = array[:, 4]
+# KFold cross-validation setup
+kfold = KFold(n_splits=10)
+model = KNeighborsClassifier(n_neighbors=3)
+# Cross-validation score before applying PCA
+score = cross_val_score(model, X, y, cv=10)
+print("\nCross score before applying PCA")
+print(score.mean())
+# Apply PCA
+pca = decomposition.PCA(n_components=1)
+X_pca = pca.fit_transform(X)
+# Cross-validation score after applying PCA
+core = cross_val_score(model, X_pca, y, cv=10)
+print("\nCross score after applying PCA")
+print(core.mean())
+Find S- Algorithm
+Listing - 1
+import csv
+attr_values = [['g9', 'g8'], ['Yes', 'No'], ['Excellent', 'Good'], ['Good', 'Bad'], ['Fast', 'Slow'], ['Yes', 'No']]
+num_attrs = len(attr_values)
+print(" \n The most general hypothesis : ['?','?','?','?','?','?']\n")
+print("\n The most specific hypothesis : ['0','0','0','0','0','0']\n")
+a = []
+print("\n Training Dataset \n")
+with open('Find-S csv.csv', 'r') as csvFile:
+ reader = csv.reader(csvFile)
+ for row in reader:
+ a.append(row)
+ print(row)
+print("\n The initial value of hypothesis: ")
+h = ['0'] * num_attrs
+print(h)
+for j in range(0, num_attrs):
+ h[j] = a[0][j]
+print("\n Find S: Finding Maximally Specific Hypothesis\n")
+for i in range(0, len(a)):
+ if a[i][num_attrs] == 'Yes':
+ for j in range(0, num_attrs):
+ if a[i][j] != h[j]:
+ h[j] = '?'
+ else:
+ h[j] = a[i][j]
+ print(" Training Instance :{0} the hypothesis 'h' is ".format(i), h)
+print("\n The Final Maximally Specific Hypothesis 'h' is :\n")
+print(h)
+Listing - 2
+import csv
+attr_values = [['Y', 'N'], ['Y', 'N'], ['Y', 'N'], ['Y', 'N'], ['Positive', 'Negative']]
+num_attrs = len(attr_values)
+print(" \n The most general hypothesis : ['?','?','?','?','?']\n")
+print("\n The most specific hypothesis : ['0','0','0','0','0']\n")
+a = []
+print("\n Training Dataset \n")
+with open('Find-S_csv_list2.csv', 'r') as csvFile:
+ reader = csv.reader(csvFile)
+ for row in reader:
+ a.append(row)
+ print(row)
+print("\n The initial value of hypothesis: ")
+h = ['0'] * num_attrs
+print(h)
+for j in range(0, num_attrs):
+ h[j] = a[0][j]
+print("\n Find S: Finding Maximally Specific Hypothesis\n")
+for i in range(0, len(a)):
+ if a[i][num_attrs] == 'Positive':
+ for j in range(0, num_attrs):
+ if a[i][j] != h[j]:
+ h[j] = '?'
+ else:
+ h[j] = a[i][j]
+ print(" Training Instance :{0} the hypothesis 'h' is ".format(i), h)
+print("\n The Final Maximally Specific Hypothesis 'h' is :\n")
+print(h)
+Listing - 3
+import csv
+attr_values = [['Y', 'N'], ['Y', 'N'], ['Y', 'N'], ['Y', 'N'], ['Positive', 'Negative']]
+num_attrs = len(attr_values)
+print(" \n The most general hypothesis : ['?','?','?','?','?']\n")
+print("\n The most specific hypothesis : ['0','0','0','0','0']\n")
+a = []
+print("\n Training Dataset \n")
+with open('Find-S_csv_list3.csv', 'r') as csvFile:
+ reader = csv.reader(csvFile)
+ for row in reader:
+ a.append(row)
+ print(row)
+print("\n The initial value of hypothesis: ")
+h = ['0'] * num_attrs
+print(h)
+for j in range(0, num_attrs):
+ h[j] = a[0][j]
+print("\n Find S: Finding Maximally Specific Hypothesis\n")
+for i in range(0, len(a)):
+ if a[i][num_attrs] == 'Positive':
+ for j in range(0, num_attrs):
+ if a[i][j] != h[j]:
+ h[j] = '?'
+ else:
+ h[j] = a[i][j]
+ print(" Training Instance :{0} the hypothesis 'h' is ".format(i), h)
+print("\n The Final Maximally Specific Hypothesis 'h' is :\n")
+print(h)
+KNN
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.preprocessing import StandardScaler
+dataset = pd.read_csv("knearest csv.csv")
+print(dataset.shape)
+print(dataset.head())
+print(dataset.tail(2))
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, 3].values
+print(X)
+print(y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+classifier = KNeighborsClassifier(n_neighbors=3)
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+print([9.1,85,8.])
+predicted = classifier.predict([[9.1,85,8.]])
+print(predicted)
+Listing - 2
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+import matplotlib.pyplot as plt
+# Load the Iris data set
+dataset = pd.read_csv("Iris.csv")
+print(dataset.shape)
+print(dataset.head())
+print(dataset.tail(2))
+print(dataset.describe())
+# Split the Iris features into input and output columns
+X = dataset.iloc[:, 1:5].values
+y = dataset.iloc[:, 5].values
+# Split the data matrix into train and test dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
+#Train the model using KNeighborsClassifier
+classifier = KNeighborsClassifier(n_neighbors=3)
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+# Evaluate the model and print the confusion matrix and classification report
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+# Print the accuracy score
+accuracy = accuracy_score(y_test, y_pred)*100
+print('Accuracy of our model is equal ' + str(round(accuracy, 2)) + ' %.')
+Linear and Multiple Regression
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn import linear_model
+# Sample data for sales
+salesdata = {'week': [1, 2, 3, 4, 5],
+ 'sales': [1.2, 1.8, 2.6, 3.2, 3.8]}
+# Create DataFrame
+df = pd.DataFrame(salesdata, columns=['week', 'sales'])
+# Scatter plot of week vs sales
+plt.scatter(df['week'], df['sales'], color='green')
+plt.title('Regression between Week and Sales')
+plt.xlabel('Week')
+plt.ylabel('Sales (Thousands)')
+# Prepare data for Linear Regression
+X = df[['week']] # Independent variable (Week)
+y = df['sales'] # Dependent variable (Sales)
+# Apply Linear Regression
+regr = linear_model.LinearRegression()
+regr.fit(X, y)
+# Output the intercept and coefficients
+print('Intercept:', regr.intercept_)
+print('Coefficients:', regr.coef_)
+# Print the regression equation
+print('\nThe Regression Equation is: Y =', regr.coef_[0], '* X +', regr.intercept_)
+# Predict using the model
+pred = regr.predict(X)
+plt.plot(X, pred, color='red') # Regression line
+# Compute Adjusted R-squared value
+print("\nAdjusted R Squared for Regression model:", regr.score(X, y))
+Listing - 2
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+from sklearn.datasets import make_regression
+X,y = make_regression(n_samples = 50,n_features=1,noise=0.1)
+plt.scatter(X,y,color='green')
+plt.title('Regression among X and y')
+plt.xlabel('X - axis - X')
+plt.ylabel('Y- Dependent - y')
+regr = linear_model.LinearRegression()
+regr.fit(X,y)
+print('Intercept: \n', regr.intercept_)
+print('Coefficients: \n', regr.coef_)
+print('\nThe Regression Equation is',regr.coef_,'* X +',regr.intercept_)
+# Fit the model for the given data
+pred = regr.predict(X)
+plt.plot(X,pred)
+# Compute Adjusted R squared Error
+print("\nAdjusted R Squared for Regression model:",regr.score(X,y))
+Multiple Regression
+from sklearn import linear_model
+from sklearn.datasets import make_regression
+print("Multiple regression \n\n")
+
+# Multiple Regression
+# Create random dataset with 2 features. Dataset has 50 samples with noise 0.1.
+X,y = make_regression(n_samples = 50,n_features=2,noise=0.1)
+regr = linear_model.LinearRegression()
+regr.fit(X,y)
+print('Intercept: \n', regr.intercept_)
+print('Coefficients: \n', regr.coef_)
+# Compute Adjusted R squared Error
+print("\nAdjusted R Squared for Regression model:",regr.score(X,y))
+Lasso, Ridge, Elastic Net
+from sklearn import linear_model
+from sklearn.linear_model import RidgeCV
+from sklearn.linear_model import ElasticNet
+from sklearn.datasets import make_regression
+# Create random dataset with 1 features. Dataset has 50 samples with noise 0.1
+X,y = make_regression(n_samples = 50,n_features=1,noise=0.1)
+# linear regression
+regr = linear_model.LinearRegression()
+regr.fit(X,y)
+print('Intercept: \n', regr.intercept_)
+print('Coefficients:\n', regr.coef_)
+# find score
+print('\nScore of Linear Regression:')
+print(regr.score(X,y))
+## RIDGE REGRESSION
+clf = RidgeCV(alphas=[1e-3, 1e-2, 1e-1, 1]).fit(X, y)
+clf.fit(X,y)
+print('\nRidge Regression\n')
+print('Ridge Intercept:', clf.intercept_)
+print('Ridge Coefficients:', clf.coef_)
+print('\nScore of Ridge Regression:')
+print(clf.score(X,y))
+# Compute Adjusted R squared Error
+print("\nAdjusted R Squared for Ridge Regression mdel:",clf.score(X,y))
+# LASSO REGRESSION
+clf1 = linear_model.Lasso(alpha=0.1).fit(X,y)
+print('\nLasso Regression\n')
+print('Lasso Intercept:', clf1.intercept_)
+print('Lasso Coefficients:', clf1.coef_)
+print('\nScore of Lasso Regression:')
+print(clf1.score(X,y))
+# Compute Adjusted R squared Error
+print("\nAdjusted R Squared for Lasso Regression mdel:",clf1.score(X,y))
+# ELASTICNET REGRESSION
+clf2 =ElasticNet(random_state=0).fit(X,y)
+print('\nElasticNet Regression\n')
+print('ElasticNet Intercept:', clf2.intercept_)
+print('ElasticNet Coefficients:', clf2.coef_)
+print('\nScore of ElasticNet Regression:')
+print(clf2.score(X,y))
+# Compute Adjusted R squared Error
+print("\nAdjusted R Squared for ElsticNet Regression mdel:",clf2.score(X,y))
+Logistic Regression
+Listing - 1
+import pandas as pd
+from sklearn.datasets import make_blobs
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report
+X, y = make_blobs(n_samples=200, centers=3, n_features=3)
+df = pd.DataFrame(dict(x=X[:,0], y=X[:,1], label=y))
+# Print the sample top five records
+print("Top five Records\n\n")
+df_top = df.head(5)
+print(df_top)
+# Condition the input
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.40,random_state=0)
+# Construct the logistic regression model
+model = LogisticRegression()
+# Fit the model
+model.fit(X_train,y_train)
+#Prediction for the test sample
+predicted = model.predict(X_test)
+# Print the classification report
+print("\n\nClassification Report")
+report_lr = classification_report(y_test,predicted)
+print(report_lr)
+Decision tree classifier
+Listing 1:
+import pandas
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
+from sklearn.metrics import classification_report, confusion_matrix
+data = {'CGPA':['g9','g8','g9','l8','g8','g9','l8','g9','g8','g8'],
+ 'Inter':['Y','N','N','N','Y','Y','Y','N','Y','Y'],
+ 'PK':['+++','+','==','==','+','+','+','+++','+','=='],
+ 'CS':['G','M','P','G','M','M','P','G','G','G'],
+ 'Job':['Y','Y','N','N','Y','Y','N','Y','Y','Y']}
+table=pandas.DataFrame(data,columns=["CGPA","Inter","PK","CS","Job"])
+table.where(table["CGPA"]=="g9").count()
+encoder=LabelEncoder()
+for i in table:
+ table[i]=encoder.fit_transform(table[i])
+X=table.iloc[:,0:4].values
+y=table.iloc[:,4].values
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size= 0.20,random_state=2)
+model=DecisionTreeClassifier(criterion='entropy', max_depth=3)
+model = model.fit(X_train,y_train)
+y_pred = model.predict(X_test)
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+print([1,0,0,1])
+if model.predict([[1,0,0,1]])==1:
+ print("Got JOB")
+else:
+ print("Didn’t get JOB")
+ print([2,0,2,0])
+if model.predict([[2,0,2,0]])==1:
+ print("Got JOB")
+else:
+ print("Didn’t get JOB")
+Listing 2:
+from matplotlib import pyplot as plt
+from sklearn import datasets
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
+import graphviz
+# Load the Iris dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+# Train the model using DecisionTreeClassifier ID3
+clf = DecisionTreeClassifier(criterion='entropy', max_depth=3)
+model = clf.fit(X, y)
+#Visualize the model using tree graph
+fig = plt.figure(figsize=(10,8))
+_ = tree.plot_tree(clf,
+ feature_names=iris.feature_names,
+ class_names=iris.target_names,
+ filled=True)
+plt.show()
+#fig.savefig("decistion_tree.png")
+Perceptron
+import numpy as np
+class Perceptron(object):
+
+ def __init__(self, input_size, lr=0.2, epochs=4):
+ self.W = np.array([0.3,-0.2])
+ self.epochs = epochs
+ self.lr = lr
+
+ def activation_fn(self, x):
+ return 1 if x >= 0 else 0
+ def predict(self, x,theta):
+ z = self.W.T.dot(x)-theta
+ z=round(z,2)
+ a = self.activation_fn(z)
+ return a
+
+ def fit(self, X, d,theta ,count):
+ for _ in range(self.epochs):
+
+ print("Epoch: ", count)
+ count = count+1
+ for i in range(d.shape[0]):
+ x = X[i]
+ print("input", x , "\t", "Weight:",self.W )
+ y = self.predict(x,theta)
+ e = d[i] - y
+ self.W = self.W + self.lr * e * x
+
+if __name__ == '__main__':
+ X = np.array([
+ [0, 0],
+ [0, 1],
+ [1, 0],
+ [1, 1]
+ ])
+ d = np.array([0, 0, 0, 1])
+ perceptron = Perceptron(input_size=2)
+ theta=0.4
+ count =1
+ perceptron.fit(X, d,theta, count)
+ print(perceptron.W)
+Multilayer Perceptron
+Listing 1:
+import numpy as np
+def abs(x):
+return x if x>0 else -x
+def sigmoid (x):
+ return 1/(1 + np.exp(-x))
+def sigmoid_derivative(x):
+ return x * (1 - x)
+def checkError(predicted_output):
+expected_output = [[0],[1],[1],[0]]
+for i,j in zip(expected_output , predicted_output):
+if abs(i[0]-j[0]) > 0.001:
+return True
+return False
+#Input datasets
+inputs = np.array([[0,0],[0,1],[1,0],[1,1]])
+expected_output = np.array([[0],[1],[1],[0]])
+epoch = 0
+lr = 0.1
+# inputLayerNeurons = 2
+# hiddenLayerNeurons = 2
+# outputLayerNeurons = 1
+inputLayerNeurons = int(input("enter no of inputLayer"))
+hiddenLayerNeurons = int(input("enter no of hiddenlayer "))
+outputLayerNeurons = int(input("enter no of outputlayer "))
+hidden_weights = []
+for i in range(1,inputLayerNeurons+1):
+hidden_weights_ind = []
+for j in range(inputLayerNeurons+1,inputLayerNeurons+hiddenLayerNeurons+1):
+hidden_weights_ind.append(float(input('w'+str(i)+str(j))))
+hidden_weights.append(hidden_weights_ind)
+
+output_weights = []
+for i in range(inputLayerNeurons+1,inputLayerNeurons+hiddenLayerNeurons+1):
+output_weights_ind = []
+for j in
+range(inputLayerNeurons+hiddenLayerNeurons+1,inputLayerNeurons+hiddenLayerNeurons+outputLayerNeurons+1):
+output_weights_ind.append(float(input('w'+str(i)+str(j))))
+output_weights.append(output_weights_ind)
+hidden_bias = []
+output_bias = []
+for i in range(inputLayerNeurons+1,inputLayerNeurons+hiddenLayerNeurons+outputLayerNeurons+1):
+if i > inputLayerNeurons+hiddenLayerNeurons:
+output_bias.append(float(input("o"+str(i))))
+else:
+hidden_bias.append(float(input("o"+str(i))))
+hidden_weights = np.asarray(hidden_weights)
+hidden_bias = np.asarray([hidden_bias])
+output_weights = np.asarray(output_weights)
+output_bias = np.asarray([output_bias])
+print("Initial hidden weights: ",end='')
+print(*hidden_weights)
+print("Initial hidden biases: ",end='')
+print(*hidden_bias)
+print("Initial output weights: ",end='')
+print(*output_weights)
+print("Initial output biases: ",end='')
+print(*output_bias)
+predicted_output = [[0],[0],[0],[0]]
+#Training algorithm
+while checkError(predicted_output):
+epoch += 1
+#Forward Propagation
+hidden_layer_activation = np.dot(inputs,hidden_weights)
+hidden_layer_activation += hidden_bias
+hidden_layer_output = sigmoid(hidden_layer_activation)
+output_layer_activation = np.dot(hidden_layer_output,output_weights)
+output_layer_activation += output_bias
+predicted_output = sigmoid(output_layer_activation)
+#Backpropagation
+error = expected_output - predicted_output
+d_predicted_output = error * sigmoid_derivative(predicted_output)
+error_hidden_layer = d_predicted_output.dot(output_weights.T)
+d_hidden_layer = error_hidden_layer * sigmoid_derivative(hidden_layer_output)
+#Updating Weights and Biases
+output_weights += hidden_layer_output.T.dot(d_predicted_output) * lr
+output_bias += np.sum(d_predicted_output,axis=0,keepdims=True) * lr
+hidden_weights += inputs.T.dot(d_hidden_layer) * lr
+hidden_bias += np.sum(d_hidden_layer,axis=0,keepdims=True) * lr
+print("Final hidden weights: ",end='')
+print(*hidden_weights)
+print("Final hidden bias: ",end='')
+print(*hidden_bias)
+print("Final output weights: ",end='')
+print(*output_weights)
+print("Final output bias: ",end='')
+print(*output_bias)
+print("\nOutput from neural network: ",end='')
+print(*predicted_output)
+print("\nNo of epochs")
+print(epoch)
+Listing 2: MLP model using Keras with Iris dataset. Validating the model on the test data and then
+plotting the learning curve.
+from pandas import read_csv
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import SGD
+from matplotlib import pyplot
+# Read the dataset ‘Iris.csv’
+df = read_csv('Iris.csv')
+# Split the Iris features into input and output columns
+X = df.values[:, :-1]
+y = df.values[:, -1]
+# Check all data are floating point values
+X = X.astype('float32')
+# Encode the strings of labels to integer values
+y = LabelEncoder().fit_transform(y)
+# Split the data matrix into train and test dataset and Print the shape of train dataset and test dataset.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state = 123)
+print("X_train shape: {}".format(X_train.shape))
+print("X_test shape: {}".format(X_test.shape))
+print("y_train shape: {}".format(y_train.shape))
+print("y_test shape: {}".format(y_test.shape))
+# split randomly the data matrix into training dataset and validation dataset
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=1)
+# Determine the number of input features
+n_features = X_train.shape[1]
+# Define the model
+model = Sequential()
+model.add(Dense(10, activation='relu', kernel_initializer='he_normal', input_shape=(n_features,)))
+model.add(Dense(8, activation='relu', kernel_initializer='he_normal'))
+model.add(Dense(3, activation='softmax'))
+# Compile the model
+sgd = SGD(learning_rate=0.001, momentum=0.8)
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+# Fit the model
+history = model.fit(X_train, y_train, epochs=150, batch_size=32, verbose=0, validation_split=0.3)
+# Evaluate the model and print the accuracy
+loss, acc = model.evaluate(X_test, y_test, verbose=0)
+print('Test Accuracy: %.3f' % acc)
+# Visualize by plotting the learning curves
+pyplot.title('Learning Curves')
+pyplot.xlabel('Epoch')
+pyplot.ylabel('Cross Entropy')
+pyplot.plot(history.history['loss'], label='train')
+pyplot.plot(history.history['val_loss'], label='val')
+pyplot.legend()
+pyplot.show()
+Listing 3:
+from pandas import read_csv
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
+from matplotlib import pyplot as plt
+# Read the dataset ‘Iris.csv’
+df = read_csv('Iris.csv')
+# Split the Iris features into input and output columns
+X = df.values[:, :-1]
+y = df.values[:, -1]
+# Check all data are floating point values
+X = X.astype('float32')
+# Encode the strings of labels to integer values
+y = LabelEncoder().fit_transform(y)
+# Split the data matrix into train and test dataset and Print the shape of train dataset and test dataset.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state = 123)
+print("X_train shape: {}".format(X_train.shape))
+print("X_test shape: {}".format(X_test.shape))
+print("y_train shape: {}".format(y_train.shape))
+print("y_test shape: {}".format(y_test.shape))
+# split randomly the data matrix into training dataset and validation dataset
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=1)
+# Determine the number of input features
+n_features = X_train.shape[1]
+# Define model
+model = keras.Sequential([
+ keras.layers.Flatten(input_shape=(n_features,)),
+ keras.layers.Dense(4, activation=tf.nn.relu),
+ keras.layers.Dense(4, activation=tf.nn.relu),
+ keras.layers.Dense(1, activation=tf.nn.sigmoid),
+])
+# Compile the model
+model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
+# Fit the model
+history = model.fit(X_train, y_train, epochs=34, batch_size=32, verbose=0, validation_data=(X_val, y_val))
+# Evaluate the model and print the accuracy
+loss, acc = model.evaluate(X_test, y_test, verbose=0)
+print('Test Accuracy: %.3f' % acc)
+# Visualize 'Training vs. Validation loss'
+loss_train = history.history['loss']
+loss_val = history.history['val_loss']
+epochs = range(1,35)
+plt.plot(epochs, loss_train, 'g', label='Training loss')
+plt.plot(epochs, loss_val, 'b', label='validation loss')
+plt.title('Training vs. Validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+# Visualize 'Training Accuracy vs. Validation accuracy'
+loss_train = history.history['accuracy']
+loss_val = history.history['val_accuracy']
+epochs = range(1,35)
+plt.plot(epochs, loss_train, 'g', label='Training accuracy')
+plt.plot(epochs, loss_val, 'b', label='validation accuracy')
+plt.title('Training vs. Validation accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+SVM
+Program Listing - 1
+import pandas as pd
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.metrics import accuracy_score
+# Reading the csv Iris dataset file
+df = pd.read_csv("iris1.csv")
+print(df.head(10))
+# Conditioning the data
+array = df.values
+X = array[:,0:4]
+y = array[:,4]
+# Condition the training and Testing data
+# The number of samples can be tuned with the test_size parameter.
+# Here, 95% of the data is used.
+X_train, X_test, y_train, y_test = train_test_split( \
+ X, y,test_size=0.95,random_state=0)
+# Construct the Linear model
+model = SVC(kernel='linear',random_state=0)
+model.fit(X_train,y_train)
+# Test the model with Linear kernel
+pred = model.predict(X_test)
+# Prepare confusion matrix
+print("\n\nThe confusion matrix is \n\n")
+conf = confusion_matrix(y_test,pred)
+print(conf)
+# pepare Classification Report
+print("\n\nAccuracy is")
+accuracy = accuracy_score(y_test,pred)
+print(accuracy)
+# Or report can be obtained as follows
+print('\n Classification Report')
+report = classification_report(y_test,pred)
+print(report)
+# RBF kernel
+model1 = SVC(kernel='rbf',random_state=0)
+model1.fit(X_train,y_train)
+# Test the model
+pred = model1.predict(X_test)
+# Prepare confusion matrix
+print("\n\nThe confusion matrix for RBF kernel is \n\n")
+conf = confusion_matrix(y_test,pred)
+print(conf)
+# pepare Classification Report
+print("\n\nAccuracy for RBF kernel is")
+accuracy = accuracy_score(y_test,pred)
+print(accuracy)
+SVR
+Program Listing - 1
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_regression
+from sklearn import svm
+print("Support Vector Regression\n\n")
+
+# SVR Regression
+# Create random dataset with 2 features. Dataset has 50 samples with noise 0.1
+X,y = make_regression(n_samples=50,n_features=1,noise=0.1,random_state=0)
+plt.scatter(X,y, color='green')
+plt.title('Regression among X and y')
+plt.xlabel('X - axis - X')
+plt.ylabel('Y- Dependent - y')
+# Support Vector Regression model creation
+model = svm.SVR(kernel='linear',gamma='auto')
+model.fit(X,y)
+print('Intercept: \n', model.intercept_)
+print('Coefficients: \n', model.coef_)
+print('The regression equation is',model.intercept_,'+',model.coef_,'* X')
+pred = model.predict(X)
+plt.plot(X,pred)
